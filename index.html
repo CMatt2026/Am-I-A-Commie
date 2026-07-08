@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Am I a Commie? A mobile-friendly political alignment quiz.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Am I a Commie?</title>
+  <style>
+    :root { --bg:#0f172a; --card:#111827; --muted:#94a3b8; --text:#f8fafc; --line:#334155; --cyan:#38bdf8; --violet:#a78bfa; --red:#ef4444; --gold:#f59e0b; --green:#22c55e; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; font-family:Arial,Helvetica,sans-serif; background:radial-gradient(circle at top,#172554 0,#020617 42%,#0f172a 100%); color:var(--text); min-height:100vh; padding:18px; }
+    .wrap { max-width:980px; margin:0 auto; }
+    .hero,.card { background:rgba(17,24,39,.96); border:1px solid var(--line); border-radius:22px; box-shadow:0 18px 60px rgba(0,0,0,.38); }
+    .hero { padding:28px; margin-bottom:16px; text-align:center; }
+    h1 { margin:0 0 8px; font-size:clamp(2.2rem,8vw,4.5rem); letter-spacing:-.05em; }
+    h2 { margin:0 0 12px; } h3 { margin:0 0 8px; }
+    p { color:var(--muted); line-height:1.55; }
+    .tagline { margin:0 auto; max-width:760px; }
+    .card { padding:22px; }
+    .progressOuter { height:14px; border-radius:999px; background:#020617; border:1px solid var(--line); overflow:hidden; margin:18px 0; }
+    .progressInner { height:100%; width:0%; background:linear-gradient(90deg,var(--cyan),var(--violet)); transition:width .25s ease; }
+    .topic { color:#bae6fd; font-weight:bold; font-size:.9rem; text-transform:uppercase; letter-spacing:.08em; }
+    .question { font-size:clamp(1.22rem,4vw,1.55rem); line-height:1.3; font-weight:bold; margin:10px 0 18px; }
+    .answers { display:grid; gap:12px; }
+    .answer { display:block; width:100%; text-align:left; border:1px solid var(--line); border-radius:16px; padding:15px; background:#020617; color:var(--text); cursor:pointer; font-size:1rem; line-height:1.38; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+    .answer:hover,.answer:focus { outline:none; border-color:var(--cyan); background:#082f49; }
+    .answer.selected { border-color:var(--violet); background:#312e81; box-shadow:0 0 0 2px rgba(167,139,250,.25); }
+    .nav { display:flex; gap:12px; justify-content:space-between; flex-wrap:wrap; margin-top:20px; }
+    .btn { border:0; border-radius:14px; padding:14px 18px; font-weight:bold; font-size:1rem; cursor:pointer; min-height:48px; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+    .btn.primary { background:linear-gradient(90deg,var(--cyan),var(--violet)); color:#020617; }
+    .btn.secondary { background:#1f2937; color:#fff; border:1px solid var(--line); }
+    .btn:disabled { opacity:.45; cursor:not-allowed; }
+    .hidden { display:none !important; }
+    .scoreGrid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:18px 0; }
+    .score { background:#020617; border:1px solid var(--line); border-radius:16px; padding:15px; text-align:center; color:#cbd5e1; }
+    .score b { display:block; color:white; font-size:1.8rem; margin-top:5px; }
+    .gauge { margin:24px 0; padding:18px; background:#020617; border:1px solid var(--line); border-radius:18px; }
+    .scale { position:relative; height:20px; border-radius:999px; margin:28px 8px 14px; background:linear-gradient(90deg,#2563eb,#7c3aed,#dc2626); }
+    .scale.ideology { background:linear-gradient(90deg,#991b1b 0%,#ef4444 33%,#2563eb 66%,#111827 100%); }
+    .dot { position:absolute; top:50%; left:0%; width:30px; height:30px; border-radius:50%; background:white; border:4px solid #020617; transform:translate(-50%,-50%); box-shadow:0 0 18px rgba(255,255,255,.75); transition:left .85s cubic-bezier(.2,.9,.2,1); }
+    .labels { display:flex; justify-content:space-between; gap:6px; color:#cbd5e1; font-size:.82rem; }
+    .labels span { flex:1; text-align:center; }
+    .triangle { position:relative; height:260px; max-width:560px; margin:15px auto 32px; clip-path:polygon(50% 0%,0% 100%,100% 100%); background:linear-gradient(135deg,rgba(59,130,246,.35),rgba(245,158,11,.24),rgba(239,68,68,.35)); }
+    .triDot { position:absolute; width:24px; height:24px; border-radius:50%; background:white; border:4px solid #020617; transform:translate(-50%,-50%); box-shadow:0 0 18px rgba(255,255,255,.8); transition:left .85s cubic-bezier(.2,.9,.2,1),top .85s cubic-bezier(.2,.9,.2,1); }
+    .triLabel { position:absolute; font-weight:bold; font-size:.9rem; text-shadow:0 2px 8px #000; }
+    .dem { top:6px; left:50%; transform:translateX(-50%); color:#93c5fd; } .lib { bottom:5px; left:8px; color:#fde68a; } .rep { bottom:5px; right:8px; color:#fecaca; }
+    .summary { border-left:4px solid var(--cyan); background:rgba(148,163,184,.09); padding:14px; border-radius:12px; margin-top:14px; }
+    .actions { display:flex; gap:12px; flex-wrap:wrap; margin:18px 0; }
+    .actions .btn { flex:1; }
+    .qrBox { display:grid; grid-template-columns:180px 1fr; gap:16px; align-items:center; margin-top:15px; }
+    .qrBox img { width:180px; height:180px; background:white; border-radius:12px; padding:8px; }
+    .answersReview { margin-top:18px; } .answersReview div { padding:10px 0; border-bottom:1px solid rgba(51,65,85,.65); color:#cbd5e1; }
+    .installHint { font-size:.9rem; }
+    @media(max-width:680px) { body { padding:10px; } .hero,.card { border-radius:16px; padding:17px; } .scoreGrid { grid-template-columns:1fr; } .nav .btn,.actions .btn { flex:1 1 100%; } .labels { font-size:.71rem; } .triangle { height:220px; } .qrBox { grid-template-columns:1fr; text-align:center; } .qrBox img { margin:auto; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Am I a Commie?</h1>
+      <p class="tagline">A quick, mobile-friendly political alignment quiz using the original ten questions. Results are a conversation starter, not a scientific diagnosis.</p>
+    </section>
+    <section id="quiz" class="card" aria-live="polite">
+      <div id="counter"></div>
+      <div class="progressOuter"><div id="progress" class="progressInner"></div></div>
+      <div id="topic" class="topic"></div>
+      <div id="question" class="question"></div>
+      <div id="answers" class="answers"></div>
+      <div class="nav">
+        <button id="backBtn" class="btn secondary" type="button">Back</button>
+        <button id="nextBtn" class="btn primary" type="button">Next</button>
+      </div>
+    </section>
+    <section id="results" class="card hidden">
+      <h2>Your Results</h2>
+      <p id="mainSummary"></p>
+      <div class="scoreGrid">
+        <div class="score">Democrat <b id="demScore">0%</b></div>
+        <div class="score">Libertarian <b id="libScore">0%</b></div>
+        <div class="score">Republican <b id="repScore">0%</b></div>
+      </div>
+      <div class="gauge">
+        <h3>Democrat / Libertarian / Republican Alignment</h3>
+        <p>Your position is shown inside the triangle based on your answers.</p>
+        <div class="triangle"><span class="triLabel dem">Democrat</span><span class="triLabel lib">Libertarian</span><span class="triLabel rep">Republican</span><div class="triDot" id="triDot"></div></div>
+      </div>
+      <div class="gauge">
+        <h3>Communist / Socialist / Democratic / Fascist Scale</h3>
+        <p>This simplified scale estimates where your answers lean relative to four broad government-role labels.</p>
+        <div class="scale ideology"><div class="dot" id="ideoDot"></div></div>
+        <div class="labels"><span>Communist</span><span>Socialist</span><span>Democratic</span><span>Fascist</span></div>
+        <div id="ideoSummary" class="summary"></div>
+      </div>
+      <div class="actions">
+        <button id="shareBtn" class="btn primary" type="button">Share Results</button>
+        <button id="installBtn" class="btn secondary hidden" type="button">Install App</button>
+        <button id="retakeBtn" class="btn secondary" type="button">Retake Quiz</button>
+      </div>
+      <div class="gauge">
+        <h3>QR Code</h3>
+        <div class="qrBox"><img id="qrImg" alt="QR code for this quiz"><p class="installHint">After hosting on GitHub Pages, this QR code points to your live quiz link. You can screenshot or download it for flyers, texts, or social posts.</p></div>
+      </div>
+      <h3>Your Answers</h3>
+      <div id="answerList" class="answersReview"></div>
+    </section>
+  </main>
+  <script>
+  (function() {
+    'use strict';
+    var questions = [
+  {
+    topic: "Climate Change & Energy",
+    question: "Which energy and climate policy best matches your view?",
+    options: [
+      { text: "Strong federal action, strict emissions limits, and major clean-energy investment.", d: 3, l: 0, r: 0, econ: 18 },
+      { text: "Clean-energy incentives, but with room for natural gas and nuclear.", d: 2, l: 1, r: 1, econ: 35 },
+      { text: "Let markets and technology lead with limited regulation.", d: 0, l: 3, r: 2, econ: 76 },
+      { text: "Prioritize domestic oil, gas, coal, and energy independence.", d: 0, l: 1, r: 3, econ: 90 }
+    ]
+  },
+  {
+    topic: "Abortion",
+    question: "Which abortion policy is closest to your view?",
+    options: [
+      { text: "Legal access should be broadly protected nationwide.", d: 3, l: 2, r: 0, econ: 50 },
+      { text: "Generally legal early in pregnancy, with later restrictions.", d: 2, l: 2, r: 1, econ: 55 },
+      { text: "Mostly decided by states with some exceptions.", d: 0, l: 2, r: 2, econ: 65 },
+      { text: "Strong restrictions, with limited exceptions.", d: 0, l: 0, r: 3, econ: 70 }
+    ]
+  },
+  {
+    topic: "Immigration",
+    question: "Which immigration approach best matches your view?",
+    options: [
+      { text: "Expand legal pathways, protect asylum, and create a path to citizenship.", d: 3, l: 2, r: 0, econ: 35 },
+      { text: "Secure the border while expanding merit-based and workforce immigration.", d: 1, l: 2, r: 2, econ: 60 },
+      { text: "Strict border enforcement before any broader reform.", d: 0, l: 1, r: 3, econ: 76 },
+      { text: "Greatly reduce immigration and increase deportations.", d: 0, l: 0, r: 3, econ: 85 }
+    ]
+  },
+  {
+    topic: "Gun Policy",
+    question: "Which gun policy best matches your view?",
+    options: [
+      { text: "Stronger federal gun restrictions, including assault-style weapon limits.", d: 3, l: 0, r: 0, econ: 35 },
+      { text: "Universal background checks and red-flag laws, but no broad bans.", d: 2, l: 1, r: 1, econ: 50 },
+      { text: "Protect lawful gun ownership with limited additional restrictions.", d: 0, l: 2, r: 2, econ: 70 },
+      { text: "Gun ownership is a core right and most restrictions should be reduced.", d: 0, l: 3, r: 3, econ: 85 }
+    ]
+  },
+  {
+    topic: "Government Power",
+    question: "What role should the federal government generally play?",
+    options: [
+      { text: "A strong federal government should solve major social and economic problems.", d: 3, l: 0, r: 0, econ: 20 },
+      { text: "Government should provide safety nets but stay practical and accountable.", d: 2, l: 1, r: 1, econ: 42 },
+      { text: "Government should be smaller, with more authority left to states and individuals.", d: 0, l: 3, r: 2, econ: 75 },
+      { text: "The federal government is too powerful and should be sharply limited.", d: 0, l: 3, r: 3, econ: 90 }
+    ]
+  },
+  {
+    topic: "Education",
+    question: "Which education policy is closest to your view?",
+    options: [
+      { text: "Increase public-school funding and protect inclusive curriculum standards.", d: 3, l: 0, r: 0, econ: 25 },
+      { text: "Support public schools while giving parents more transparency.", d: 2, l: 1, r: 1, econ: 48 },
+      { text: "Expand school choice, vouchers, and parental control over curriculum.", d: 0, l: 2, r: 3, econ: 78 },
+      { text: "Reduce federal influence and let local communities control education.", d: 0, l: 3, r: 2, econ: 82 }
+    ]
+  },
+  {
+    topic: "Healthcare",
+    question: "Which healthcare system do you prefer?",
+    options: [
+      { text: "Universal government-run healthcare or Medicare for All.", d: 3, l: 0, r: 0, econ: 10 },
+      { text: "Public option plus private insurance choices.", d: 3, l: 1, r: 0, econ: 30 },
+      { text: "Keep private insurance but improve affordability and transparency.", d: 1, l: 2, r: 2, econ: 62 },
+      { text: "Use market competition and reduce federal healthcare mandates.", d: 0, l: 3, r: 3, econ: 88 }
+    ]
+  },
+  {
+    topic: "DEI / Race Policy",
+    question: "Which statement best matches your view on DEI and race-related policy?",
+    options: [
+      { text: "DEI and race-conscious policies are needed to correct systemic inequality.", d: 3, l: 0, r: 0, econ: 25 },
+      { text: "Anti-discrimination efforts matter, but programs should be measured carefully.", d: 2, l: 1, r: 1, econ: 45 },
+      { text: "Policy should be color-blind and avoid race-based preferences.", d: 0, l: 3, r: 2, econ: 72 },
+      { text: "DEI programs are divisive and should be removed from public institutions.", d: 0, l: 1, r: 3, econ: 82 }
+    ]
+  },
+  {
+    topic: "LGBTQ+ / Transgender Policy",
+    question: "Which policy approach best matches your view?",
+    options: [
+      { text: "Strong legal protections for LGBTQ+ people, including gender-identity protections.", d: 3, l: 2, r: 0, econ: 40 },
+      { text: "Protect adults' rights while creating age-based limits for minors.", d: 1, l: 2, r: 2, econ: 60 },
+      { text: "Limit transgender participation in some sports and restrict school gender policies.", d: 0, l: 1, r: 3, econ: 75 },
+      { text: "Roll back gender-identity policies in schools, sports, and public institutions.", d: 0, l: 0, r: 3, econ: 85 }
+    ]
+  },
+  {
+    topic: "Election Laws & Voting Access",
+    question: "Which election policy best matches your view?",
+    options: [
+      { text: "Expand mail voting, early voting, automatic registration, and federal voting protections.", d: 3, l: 1, r: 0, econ: 35 },
+      { text: "Make voting accessible while maintaining voter ID and ballot-security rules.", d: 1, l: 2, r: 2, econ: 60 },
+      { text: "Require stricter voter ID, tighter mail-ballot controls, and state-led election rules.", d: 0, l: 1, r: 3, econ: 78 },
+      { text: "Election security should be prioritized even if voting becomes less convenient.", d: 0, l: 0, r: 3, econ: 85 }
+    ]
+  }
+];
+    var current = 0; var selections = new Array(questions.length); var deferredInstall = null;
+    var byId = function(id) { return document.getElementById(id); };
+    function render() {
+      var q = questions[current];
+      byId('counter').textContent = 'Question ' + (current + 1) + ' of ' + questions.length;
+      byId('progress').style.width = Math.round(((current) / questions.length) * 100) + '%';
+      byId('topic').textContent = q.topic; byId('question').textContent = q.question;
+      var html = '';
+      for (var i=0;i<q.options.length;i++) {
+        var cls = selections[current] === i ? 'answer selected' : 'answer';
+        html += '<button type="button" class="' + cls + '" data-index="' + i + '">' + escapeHtml(q.options[i].text) + '</button>';
+      }
+      byId('answers').innerHTML = html;
+      byId('backBtn').disabled = current === 0;
+      byId('nextBtn').textContent = current === questions.length - 1 ? 'Show My Results' : 'Next';
+      byId('nextBtn').disabled = selections[current] === undefined;
+    }
+    function escapeHtml(str) { return String(str).replace(/[&<>"']/g, function(m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]; }); }
+    function selectAnswer(i) { selections[current] = i; render(); }
+    function next() { if (selections[current] === undefined) return; if (current < questions.length - 1) { current++; render(); } else { calculate(); } }
+    function back() { if (current > 0) { current--; render(); } }
+    function calculate() {
+      var dem=0, lib=0, rep=0, econ=0, max=questions.length*3, review=[];
+      for (var i=0;i<questions.length;i++) { var o=questions[i].options[selections[i]]; dem+=o.d; lib+=o.l; rep+=o.r; econ+=o.econ; review.push({topic:questions[i].topic, answer:o.text}); }
+      var demPct=Math.round(dem/max*100), libPct=Math.round(lib/max*100), repPct=Math.round(rep/max*100), econScore=Math.round(econ/questions.length);
+      byId('demScore').textContent=demPct+'%'; byId('libScore').textContent=libPct+'%'; byId('repScore').textContent=repPct+'%';
+      var total = dem+lib+rep || 1, dW=dem/total, lW=lib/total, rW=rep/total;
+      var x=(dW*50)+(lW*7)+(rW*93), y=(dW*12)+(lW*88)+(rW*88);
+      byId('mainSummary').innerHTML='Your strongest alignment is <strong>'+escapeHtml(getPartyLabel(dem,lib,rep))+'</strong>.';
+      byId('answerList').innerHTML = review.map(function(a) { return '<div><strong>'+escapeHtml(a.topic)+':</strong> '+escapeHtml(a.answer)+'</div>'; }).join('');
+      byId('quiz').className='card hidden'; byId('results').className='card';
+      setTimeout(function() { byId('triDot').style.left=x+'%'; byId('triDot').style.top=y+'%'; byId('ideoDot').style.left=econScore+'%'; }, 100);
+      byId('ideoSummary').innerHTML='<strong>'+escapeHtml(getIdeologyLabel(econScore))+'</strong><br>'+escapeHtml(getIdeologyDescription(econScore));
+      setupQr(); window.scrollTo(0,0);
+      try { localStorage.setItem('aic_last_result', JSON.stringify({demPct:demPct,libPct:libPct,repPct:repPct,econScore:econScore,label:getPartyLabel(dem,lib,rep),ideology:getIdeologyLabel(econScore)})); } catch(e) {}
+    }
+    function getPartyLabel(d,l,r) { var arr=[['Democrat-leaning',d],['Libertarian-leaning',l],['Republican-leaning',r]].sort(function(a,b){return b[1]-a[1];}); return arr[0][1]===arr[1][1] ? 'Mixed / Cross-pressured' : arr[0][0]; }
+    function getIdeologyLabel(score) { if(score<25) return 'Communist-leaning'; if(score<50) return 'Socialist-leaning'; if(score<75) return 'Democratic / mixed-government leaning'; return 'Fascist / authoritarian-government leaning'; }
+    function getIdeologyDescription(score) { if(score<25) return 'Your answers favor the strongest government role over major systems.'; if(score<50) return 'Your answers favor broad public services, regulation, and redistribution.'; if(score<75) return 'Your answers favor a democratic mixed system balancing public programs, markets, and civil protections.'; return 'Your answers lean toward strong state authority, security, social control, or highly centralized national priorities.'; }
+    function resetQuiz() { current=0; selections=new Array(questions.length); byId('results').className='card hidden'; byId('quiz').className='card'; render(); window.scrollTo(0,0); }
+    function setupQr() { var url = window.location.href.split('#')[0]; byId('qrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=360x360&data=' + encodeURIComponent(url); }
+    function share() { var party = byId('mainSummary').textContent || 'I took the Am I a Commie quiz.'; var url = window.location.href.split('#')[0]; var text = party + ' Take it here: ' + url; if (navigator.share) { navigator.share({title:'Am I a Commie?', text:text, url:url}).catch(function(){}); } else { navigator.clipboard && navigator.clipboard.writeText(text); alert('Result link copied or ready to copy:
+
+' + text); } }
+    byId('answers').addEventListener('click', function(e) { var t=e.target; while(t && !t.getAttribute('data-index')) t=t.parentNode; if(t) selectAnswer(parseInt(t.getAttribute('data-index'),10)); });
+    byId('nextBtn').addEventListener('click', next); byId('backBtn').addEventListener('click', back); byId('retakeBtn').addEventListener('click', resetQuiz); byId('shareBtn').addEventListener('click', share);
+    window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); deferredInstall=e; byId('installBtn').className='btn secondary'; });
+    byId('installBtn').addEventListener('click', function() { if(deferredInstall) { deferredInstall.prompt(); deferredInstall=null; byId('installBtn').className='btn secondary hidden'; } });
+    if ('serviceWorker' in navigator) { window.addEventListener('load', function() { navigator.serviceWorker.register('sw.js').catch(function(){}); }); }
+    render();
+  })();
+  </script>
+</body>
+</html>
