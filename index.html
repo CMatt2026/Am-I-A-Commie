@@ -1,210 +1,66 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0f172a">
-  <meta name="description" content="Am I a Commie? A mobile-friendly political alignment quiz.">
-  <title>Am I a Commie?</title>
-  <style>
-    :root { --bg:#0f172a; --card:#111827; --muted:#94a3b8; --text:#f8fafc; --line:#334155; --cyan:#38bdf8; --violet:#a78bfa; --orange:#f97316; }
-    * { box-sizing:border-box; }
-    body { margin:0; font-family:Arial,Helvetica,sans-serif; color:var(--text); background:radial-gradient(circle at top,#172554 0,#020617 42%,#0f172a 100%); min-height:100vh; padding:18px; }
-    .wrap { max-width:980px; margin:0 auto; }
-    .hero,.card { background:rgba(17,24,39,.96); border:1px solid var(--line); border-radius:22px; box-shadow:0 18px 60px rgba(0,0,0,.38); }
-    .hero { padding:28px; margin-bottom:16px; text-align:center; }
-    h1 { margin:0 0 8px; font-size:clamp(2.2rem,8vw,4.5rem); letter-spacing:-.05em; }
-    h2 { margin:0 0 12px; } h3 { margin:0 0 8px; }
-    p { color:var(--muted); line-height:1.55; }
-    .tagline { margin:0 auto; max-width:760px; }
-    .card { padding:22px; }
-    .progressOuter { height:14px; border-radius:999px; background:#020617; border:1px solid var(--line); overflow:hidden; margin:18px 0; }
-    .progressInner { height:100%; width:0%; background:linear-gradient(90deg,var(--cyan),var(--violet)); transition:width .25s ease; }
-    .topic { color:#bae6fd; font-weight:bold; font-size:.9rem; text-transform:uppercase; letter-spacing:.08em; }
-    .question { font-size:clamp(1.22rem,4vw,1.55rem); line-height:1.3; font-weight:bold; margin:10px 0 18px; }
-    .answers { display:grid; gap:12px; }
-    .answer { display:block; width:100%; text-align:left; border:1px solid var(--line); border-radius:16px; padding:15px; background:#020617; color:var(--text); cursor:pointer; font-size:1rem; line-height:1.38; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
-    .answer:hover,.answer:focus { outline:none; border-color:var(--cyan); background:#082f49; }
-    .answer.selected { border-color:var(--violet); background:#312e81; box-shadow:0 0 0 2px rgba(167,139,250,.25); }
-    .nav { display:flex; gap:12px; justify-content:space-between; flex-wrap:wrap; margin-top:20px; }
-    .btn { border:0; border-radius:14px; padding:14px 18px; font-weight:bold; font-size:1rem; cursor:pointer; min-height:48px; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
-    .btn.primary { background:linear-gradient(90deg,var(--cyan),var(--violet)); color:#020617; }
-    .btn.secondary { background:#1f2937; color:#fff; border:1px solid var(--line); }
-    .btn:disabled { opacity:.45; cursor:not-allowed; }
-    .hidden { display:none !important; }
-    .scoreGrid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:18px 0; }
-    .score { background:#020617; border:1px solid var(--line); border-radius:16px; padding:15px; text-align:center; color:#cbd5e1; }
-    .score b { display:block; color:white; font-size:1.8rem; margin-top:5px; }
-    .gauge { margin:24px 0; padding:18px; background:#020617; border:1px solid var(--line); border-radius:18px; }
-    .scale { position:relative; height:20px; border-radius:999px; margin:28px 8px 14px; background:linear-gradient(90deg,#991b1b 0%,#ef4444 33%,#2563eb 66%,#111827 100%); }
-    .dot { position:absolute; top:50%; left:0%; width:30px; height:30px; border-radius:50%; background:white; border:4px solid #020617; transform:translate(-50%,-50%); box-shadow:0 0 18px rgba(255,255,255,.75); transition:left .85s cubic-bezier(.2,.9,.2,1); }
-    .labels { display:flex; justify-content:space-between; gap:6px; color:#cbd5e1; font-size:.82rem; }
-    .labels span { flex:1; text-align:center; }
-    .summary { border-left:4px solid var(--cyan); background:rgba(148,163,184,.09); padding:14px; border-radius:12px; margin-top:14px; }
-    .actions { display:flex; gap:12px; flex-wrap:wrap; margin:18px 0; }
-    .actions .btn { flex:1; }
-    .answersReview { margin-top:18px; }
-    .answersReview div { padding:10px 0; border-bottom:1px solid rgba(51,65,85,.65); color:#cbd5e1; }
-    @media(max-width:680px) { body { padding:10px; } .hero,.card { border-radius:16px; padding:17px; } .scoreGrid { grid-template-columns:1fr; } .nav .btn,.actions .btn { flex:1 1 100%; } .labels { font-size:.71rem; } }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<title>Am I a Commie?</title>
+<style>
+:root{--bg:#020617;--card:#111827;--line:#334155;--text:#f8fafc;--muted:#94a3b8;--blue:#38bdf8;--violet:#a78bfa;--red:#ef4444;--orange:#f97316}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:radial-gradient(circle at top,#172554 0,#020617 45%,#0f172a 100%);color:var(--text);min-height:100vh;padding:14px}.wrap{max-width:1060px;margin:0 auto}.hero,.card{background:rgba(17,24,39,.96);border:1px solid var(--line);border-radius:22px;box-shadow:0 18px 60px rgba(0,0,0,.38)}.hero{padding:28px;margin-bottom:16px;text-align:center}.card{padding:22px;margin-bottom:16px}h1{margin:0 0 8px;font-size:clamp(2.2rem,8vw,4.4rem);letter-spacing:-.05em}h2,h3{margin:0 0 10px}p{color:var(--muted);line-height:1.55}.progressOuter{height:14px;border-radius:999px;background:#020617;border:1px solid var(--line);overflow:hidden;margin:18px 0}.progressInner{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--violet))}.topic{color:#bae6fd;font-weight:bold;font-size:.9rem;text-transform:uppercase;letter-spacing:.08em}.question{font-size:clamp(1.2rem,4vw,1.55rem);line-height:1.32;font-weight:bold;margin:10px 0 18px}.answers{display:grid;gap:12px}.answer{display:block;width:100%;text-align:left;border:1px solid var(--line);border-radius:16px;padding:15px;background:#020617;color:var(--text);cursor:pointer;font-size:1rem;line-height:1.38;touch-action:manipulation}.answer.selected{border-color:var(--violet);background:#312e81}.nav,.actions{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;margin-top:20px}.btn{border:0;border-radius:14px;padding:14px 18px;font-weight:bold;font-size:1rem;cursor:pointer;min-height:48px;touch-action:manipulation}.primary{background:linear-gradient(90deg,var(--blue),var(--violet));color:#020617}.secondary{background:#1f2937;color:#fff;border:1px solid var(--line)}.btn:disabled{opacity:.45}.hidden{display:none!important}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start}.scoreGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}.score{background:#020617;border:1px solid var(--line);border-radius:16px;padding:13px;text-align:center;color:#cbd5e1}.score b{display:block;color:white;font-size:1.55rem;margin-top:4px}.gauge,.defbox{margin:18px 0;padding:18px;background:#020617;border:1px solid var(--line);border-radius:18px}.scale{position:relative;height:20px;border-radius:999px;margin:28px 8px 14px;background:linear-gradient(90deg,#991b1b 0%,#ef4444 33%,#2563eb 66%,#111827 100%)}.dot{position:absolute;top:50%;left:0;width:30px;height:30px;border-radius:50%;background:white;border:4px solid #020617;transform:translate(-50%,-50%);box-shadow:0 0 18px rgba(255,255,255,.75)}.labels{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;color:#cbd5e1;font-size:.8rem;text-align:center}.summary{border-left:4px solid var(--blue);background:rgba(148,163,184,.09);padding:14px;border-radius:12px;margin-top:14px}.barRow{margin:10px 0}.barTop{display:flex;justify-content:space-between;color:#e5e7eb;font-weight:bold;font-size:.95rem}.meter{height:14px;background:#020617;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-top:5px}.fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--violet));width:0}.def{background:#0b1220;border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:10px}.def strong{display:block;color:#fff;margin-bottom:5px}.def p{margin:0;font-size:.92rem}.answersReview div{padding:9px 0;border-bottom:1px solid rgba(51,65,85,.65);color:#cbd5e1}.small{font-size:.85rem;color:#94a3b8}@media(max-width:780px){body{padding:10px}.hero,.card{border-radius:16px;padding:17px}.grid{grid-template-columns:1fr}.scoreGrid{grid-template-columns:1fr}.nav .btn,.actions .btn{flex:1 1 100%}.labels{font-size:.7rem}}
+</style>
 </head>
 <body>
-  <main class="wrap">
-    <section class="hero">
-      <h1>Am I a Commie?</h1>
-      <p class="tagline">A quick, mobile-friendly political alignment quiz using ten partisan-policy questions. Results are a conversation starter, not a scientific diagnosis.</p>
-    </section>
-    <section id="quiz" class="card" aria-live="polite">
-      <div id="counter"></div>
-      <div class="progressOuter"><div id="progress" class="progressInner"></div></div>
-      <div id="topic" class="topic"></div>
-      <div id="question" class="question"></div>
-      <div id="answers" class="answers"></div>
-      <div class="nav">
-        <button id="backBtn" class="btn secondary" type="button">Back</button>
-        <button id="nextBtn" class="btn primary" type="button">Next</button>
-      </div>
-    </section>
-    <section id="results" class="card hidden">
-      <h2>Your Results</h2>
-      <p id="mainSummary"></p>
-      <div class="scoreGrid">
-        <div class="score">Democrat <b id="demScore">0%</b></div>
-        <div class="score">Libertarian <b id="libScore">0%</b></div>
-        <div class="score">Republican <b id="repScore">0%</b></div>
-      </div>
-      <div class="gauge">
-        <h3>Communist / Socialist / Democratic / Fascist Scale</h3>
-        <p>This simplified scale estimates where your answers lean relative to four broad government-role labels.</p>
-        <div class="scale"><div class="dot" id="ideoDot"></div></div>
-        <div class="labels"><span>Communist</span><span>Socialist</span><span>Democratic</span><span>Fascist</span></div>
-        <div id="ideoSummary" class="summary"></div>
-      </div>
-      <div class="actions">
-        <button id="shareBtn" class="btn primary" type="button">Share Results</button>
-        <button id="retakeBtn" class="btn secondary" type="button">Retake Quiz</button>
-      </div>
-      <h3>Your Answers</h3>
-      <div id="answerList" class="answersReview"></div>
-    </section>
-  </main>
-  <script>
-  (function() {
-    'use strict';
-    var questions = [
-      { topic:'Climate Change & Energy', question:'Which energy and climate policy best matches your view?', options:[
-        { text:'Strong federal action, strict emissions limits, and major clean-energy investment.', d:3,l:0,r:0,econ:18 },
-        { text:'Clean-energy incentives, but with room for natural gas and nuclear.', d:2,l:1,r:1,econ:35 },
-        { text:'Let markets and technology lead with limited regulation.', d:0,l:3,r:2,econ:76 },
-        { text:'Prioritize domestic oil, gas, coal, and energy independence.', d:0,l:1,r:3,econ:90 }
-      ]},
-      { topic:'Abortion', question:'Which abortion policy is closest to your view?', options:[
-        { text:'Legal access should be broadly protected nationwide.', d:3,l:2,r:0,econ:50 },
-        { text:'Generally legal early in pregnancy, with later restrictions.', d:2,l:2,r:1,econ:55 },
-        { text:'Mostly decided by states with some exceptions.', d:0,l:2,r:2,econ:65 },
-        { text:'Strong restrictions, with limited exceptions.', d:0,l:0,r:3,econ:70 }
-      ]},
-      { topic:'Immigration', question:'Which immigration approach best matches your view?', options:[
-        { text:'Expand legal pathways, protect asylum, and create a path to citizenship.', d:3,l:2,r:0,econ:35 },
-        { text:'Secure the border while expanding merit-based and workforce immigration.', d:1,l:2,r:2,econ:60 },
-        { text:'Strict border enforcement before any broader reform.', d:0,l:1,r:3,econ:76 },
-        { text:'Greatly reduce immigration and increase deportations.', d:0,l:0,r:3,econ:85 }
-      ]},
-      { topic:'Gun Policy', question:'Which gun policy best matches your view?', options:[
-        { text:'Stronger federal gun restrictions, including assault-style weapon limits.', d:3,l:0,r:0,econ:35 },
-        { text:'Universal background checks and red-flag laws, but no broad bans.', d:2,l:1,r:1,econ:50 },
-        { text:'Protect lawful gun ownership with limited additional restrictions.', d:0,l:2,r:2,econ:70 },
-        { text:'Gun ownership is a core right and most restrictions should be reduced.', d:0,l:3,r:3,econ:85 }
-      ]},
-      { topic:'Government Power', question:'What role should the federal government generally play?', options:[
-        { text:'A strong federal government should solve major social and economic problems.', d:3,l:0,r:0,econ:20 },
-        { text:'Government should provide safety nets but stay practical and accountable.', d:2,l:1,r:1,econ:42 },
-        { text:'Government should be smaller, with more authority left to states and individuals.', d:0,l:3,r:2,econ:75 },
-        { text:'The federal government is too powerful and should be sharply limited.', d:0,l:3,r:3,econ:90 }
-      ]},
-      { topic:'Education', question:'Which education policy is closest to your view?', options:[
-        { text:'Increase public-school funding and protect inclusive curriculum standards.', d:3,l:0,r:0,econ:25 },
-        { text:'Support public schools while giving parents more transparency.', d:2,l:1,r:1,econ:48 },
-        { text:'Expand school choice, vouchers, and parental control over curriculum.', d:0,l:2,r:3,econ:78 },
-        { text:'Reduce federal influence and let local communities control education.', d:0,l:3,r:2,econ:82 }
-      ]},
-      { topic:'Healthcare', question:'Which healthcare system do you prefer?', options:[
-        { text:'Universal government-run healthcare or Medicare for All.', d:3,l:0,r:0,econ:10 },
-        { text:'Public option plus private insurance choices.', d:3,l:1,r:0,econ:30 },
-        { text:'Keep private insurance but improve affordability and transparency.', d:1,l:2,r:2,econ:62 },
-        { text:'Use market competition and reduce federal healthcare mandates.', d:0,l:3,r:3,econ:88 }
-      ]},
-      { topic:'DEI / Race Policy', question:'Which statement best matches your view on DEI and race-related policy?', options:[
-        { text:'DEI and race-conscious policies are needed to correct systemic inequality.', d:3,l:0,r:0,econ:25 },
-        { text:'Anti-discrimination efforts matter, but programs should be measured carefully.', d:2,l:1,r:1,econ:45 },
-        { text:'Policy should be color-blind and avoid race-based preferences.', d:0,l:3,r:2,econ:72 },
-        { text:'DEI programs are divisive and should be removed from public institutions.', d:0,l:1,r:3,econ:82 }
-      ]},
-      { topic:'LGBTQ+ / Transgender Policy', question:'Which policy approach best matches your view?', options:[
-        { text:'Strong legal protections for LGBTQ+ people, including gender-identity protections.', d:3,l:2,r:0,econ:40 },
-        { text:'Protect adults rights while creating age-based limits for minors.', d:1,l:2,r:2,econ:60 },
-        { text:'Limit transgender participation in some sports and restrict school gender policies.', d:0,l:1,r:3,econ:75 },
-        { text:'Roll back gender-identity policies in schools, sports, and public institutions.', d:0,l:0,r:3,econ:85 }
-      ]},
-      { topic:'Election Laws & Voting Access', question:'Which election policy best matches your view?', options:[
-        { text:'Expand mail voting, early voting, automatic registration, and federal voting protections.', d:3,l:1,r:0,econ:35 },
-        { text:'Make voting accessible while maintaining voter ID and ballot-security rules.', d:1,l:2,r:2,econ:60 },
-        { text:'Require stricter voter ID, tighter mail-ballot controls, and state-led election rules.', d:0,l:1,r:3,econ:78 },
-        { text:'Election security should be prioritized even if voting becomes less convenient.', d:0,l:0,r:3,econ:85 }
-      ]}
-    ];
-    var current = 0;
-    var selections = new Array(questions.length);
-    var byId = function(id) { return document.getElementById(id); };
-    function escapeHtml(str) { return String(str).replace(/[&<>"']/g, function(m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]; }); }
-    function render() {
-      var q = questions[current];
-      byId('counter').textContent = 'Question ' + (current + 1) + ' of ' + questions.length;
-      byId('progress').style.width = Math.round((current / questions.length) * 100) + '%';
-      byId('topic').textContent = q.topic;
-      byId('question').textContent = q.question;
-      byId('answers').innerHTML = q.options.map(function(o, i) {
-        var cls = selections[current] === i ? 'answer selected' : 'answer';
-        return '<button type="button" class="' + cls + '" data-index="' + i + '">' + escapeHtml(o.text) + '</button>';
-      }).join('');
-      byId('backBtn').disabled = current === 0;
-      byId('nextBtn').textContent = current === questions.length - 1 ? 'Show My Results' : 'Next';
-      byId('nextBtn').disabled = selections[current] === undefined;
-    }
-    function selectAnswer(i) { selections[current] = i; render(); }
-    function next() { if (selections[current] === undefined) return; if (current < questions.length - 1) { current++; render(); } else { calculate(); } }
-    function back() { if (current > 0) { current--; render(); } }
-    function getPartyLabel(d,l,r) { var arr=[['Democrat-leaning',d],['Libertarian-leaning',l],['Republican-leaning',r]].sort(function(a,b){return b[1]-a[1];}); return arr[0][1]===arr[1][1] ? 'Mixed / Cross-pressured' : arr[0][0]; }
-    function getIdeologyLabel(score) { if(score<25) return 'Communist-leaning'; if(score<50) return 'Socialist-leaning'; if(score<75) return 'Democratic / mixed-government leaning'; return 'Fascist / authoritarian-government leaning'; }
-    function getIdeologyDescription(score) { if(score<25) return 'Your answers favor the strongest government role over major systems.'; if(score<50) return 'Your answers favor broad public services, regulation, and redistribution.'; if(score<75) return 'Your answers favor a democratic mixed system balancing public programs, markets, and civil protections.'; return 'Your answers lean toward strong state authority, security, social control, or highly centralized national priorities.'; }
-    function calculate() {
-      var dem=0, lib=0, rep=0, econ=0, max=questions.length*3, review=[];
-      for (var i=0;i<questions.length;i++) { var o=questions[i].options[selections[i]]; dem+=o.d; lib+=o.l; rep+=o.r; econ+=o.econ; review.push({topic:questions[i].topic, answer:o.text}); }
-      var demPct=Math.round(dem/max*100), libPct=Math.round(lib/max*100), repPct=Math.round(rep/max*100), econScore=Math.round(econ/questions.length);
-      byId('demScore').textContent=demPct+'%'; byId('libScore').textContent=libPct+'%'; byId('repScore').textContent=repPct+'%';
-      byId('mainSummary').innerHTML='Your strongest alignment is <strong>'+escapeHtml(getPartyLabel(dem,lib,rep))+'</strong>.';
-      byId('answerList').innerHTML = review.map(function(a) { return '<div><strong>'+escapeHtml(a.topic)+':</strong> '+escapeHtml(a.answer)+'</div>'; }).join('');
-      byId('quiz').className='card hidden'; byId('results').className='card';
-      setTimeout(function() { byId('ideoDot').style.left=econScore+'%'; }, 100);
-      byId('ideoSummary').innerHTML='<strong>'+escapeHtml(getIdeologyLabel(econScore))+'</strong><br>'+escapeHtml(getIdeologyDescription(econScore));
-      window.scrollTo(0,0);
-    }
-    function resetQuiz() { current=0; selections=new Array(questions.length); byId('results').className='card hidden'; byId('quiz').className='card'; render(); window.scrollTo(0,0); }
-    function share() {
-      var party = byId('mainSummary').textContent || 'I took the Am I a Commie quiz.';
-      var url = window.location.href.split('#')[0];
-      var text = party + ' Take it here: ' + url;
-      if (navigator.share) { navigator.share({title:'Am I a Commie?', text:text, url:url}).catch(function(){}); }
-      else if (navigator.clipboard) { navigator.clipboard.writeText(text).then(function(){ alert('Result link copied.'); }).catch(function(){ alert(text); }); }
-      else { alert(text); }
-    }
-    byId('answers').addEventListener('click', function(e) { var t=e.target; while(t && !t.getAttribute('data-index')) t=t.parentNode; if(t) selectAnswer(parseInt(t.getAttribute('data-index'),10)); });
-    byId('nextBtn').addEventListener('click', next);
-    byId('backBtn').addEventListener('click', back);
-    byId('retakeBtn').addEventListener('click', resetQuiz);
-    byId('shareBtn').addEventListener('click', share);
-    render();
-  })();
-  </script>
+<main class="wrap">
+<section class="hero"><h1>Am I a Commie?</h1><p>A 25-question deep political alignment survey scoring your answers against U.S. party platforms and four ideology benchmarks. Results are a conversation starter, not a scientific diagnosis.</p></section>
+<section id="quiz" class="card">
+<div id="counter"></div><div class="progressOuter"><div id="progress" class="progressInner"></div></div><div id="topic" class="topic"></div><div id="question" class="question"></div><div id="answers" class="answers"></div><div class="nav"><button id="backBtn" class="btn secondary" type="button">Back</button><button id="nextBtn" class="btn primary" type="button">Next</button></div>
+</section>
+<section id="results" class="hidden">
+<div class="grid"><section class="card"><h2>Your Results</h2><p id="mainSummary"></p><div class="gauge"><h3>Party Platform Match</h3><div id="partyBars"></div></div><div class="gauge"><h3>Communist / Socialist / Democratic / Fascist Scale</h3><p>This compares your answers to simplified benchmark profiles for the four requested belief systems.</p><div class="scale"><div class="dot" id="ideoDot"></div></div><div class="labels"><span>Communist</span><span>Socialist</span><span>Democratic</span><span>Fascist</span></div><div id="ideoSummary" class="summary"></div></div><div class="gauge"><h3>Dimension Scores</h3><div id="dimBars"></div></div></section><section class="card"><h2>Definitions Graphic</h2><div class="def"><strong>Communist</strong><p>A system aiming for classless collective ownership of major productive property, often tied to centralized planning in historical state examples.</p></div><div class="def"><strong>Socialist</strong><p>A broad family of views favoring public, cooperative, social, or worker control over major economic resources and strong public services.</p></div><div class="def"><strong>Democratic</strong><p>A system based on popular sovereignty, competitive elections, civil liberties, rule of law, pluralism, and accountable institutions.</p></div><div class="def"><strong>Fascist</strong><p>An authoritarian ultranationalist ideology centered on centralized power, hierarchy, militarized unity, suppression of opposition, and state-directed society.</p></div><p class="small">These are compact comparison definitions. Real people and parties can mix traits across categories.</p></section></div><section class="card"><div class="actions"><button id="shareBtn" class="btn primary" type="button">Share Results</button><button id="retakeBtn" class="btn secondary" type="button">Retake Survey</button></div><h3>Your Answers</h3><div id="answerList" class="answersReview"></div></section>
+</section>
+</main>
+<script>
+(function(){'use strict';
+var qs=[
+{t:'Climate & Energy',q:'Which climate and energy approach do you support most?',o:[['Rapid transition away from fossil fuels with strict emissions limits and major public investment.',[3,0,0,3,3,0],85,25,20,80],['Clean-energy incentives and regulation while keeping nuclear and some natural gas.',[3,1,1,2,2,0],62,25,25,78],['Market-led innovation with limited federal mandates.',[1,2,3,0,0,1],25,20,35,65],['Prioritize domestic oil, gas, coal, and energy independence over climate mandates.',[0,3,1,0,0,3],20,45,80,45]]},
+{t:'Abortion',q:'Which abortion policy is closest to your view?',o:[['Broad legal access protected nationwide.',[3,0,2,3,3,0],50,15,15,88],['Generally legal early in pregnancy with later restrictions.',[2,1,2,1,1,0],45,20,25,75],['Mostly decided by states, with exceptions.',[0,2,2,0,0,2],35,35,55,55],['Strong restrictions, with limited exceptions.',[0,3,0,0,0,3],35,55,75,35]]},
+{t:'Immigration',q:'Which immigration approach do you prefer?',o:[['Expand asylum, legal pathways, and a path to citizenship.',[3,0,2,3,3,0],55,20,15,88],['Secure the border while expanding merit-based and workforce immigration.',[1,2,2,0,0,1],40,35,55,65],['Strict border enforcement before any broader reform.',[0,3,1,0,0,2],30,45,75,45],['Greatly reduce immigration and increase deportations.',[0,3,0,0,0,3],35,70,90,25]]},
+{t:'Gun Policy',q:'Which gun policy best matches your view?',o:[['Stronger federal restrictions, including assault-style weapon limits.',[3,0,0,2,2,0],55,45,20,60],['Universal background checks and red-flag laws, but no broad bans.',[3,1,1,1,1,0],45,35,30,70],['Protect lawful ownership with limited new restrictions.',[0,2,3,0,0,2],25,25,55,65],['Reduce most gun restrictions; gun ownership is a core individual right.',[0,2,3,0,0,3],15,20,60,60]]},
+{t:'Healthcare',q:'Which healthcare system do you prefer?',o:[['Universal government-run healthcare or Medicare for All.',[3,0,0,3,3,0],90,25,20,78],['Public option plus private insurance.',[3,0,1,2,2,0],68,20,20,80],['Private insurance with price transparency and targeted subsidies.',[1,2,2,0,0,1],38,20,35,68],['Market competition and fewer federal mandates.',[0,3,3,0,0,2],20,20,45,58]]},
+{t:'Taxes',q:'Which tax approach do you support most?',o:[['Much higher taxes on the wealthy and large corporations.',[3,0,0,3,3,0],85,25,20,72],['Moderately higher taxes on high earners to fund public programs.',[3,0,1,2,2,0],68,20,20,78],['Simplify taxes and lower rates for most people and businesses.',[0,3,3,0,0,2],25,20,50,62],['Very low taxes and major spending cuts.',[0,2,3,0,0,3],10,15,55,55]]},
+{t:'Federal Spending',q:'Which budget priority is closest to yours?',o:[['Expand social programs, housing, healthcare, and climate spending.',[3,0,0,3,3,0],82,25,20,75],['Protect core safety nets while reducing waste.',[2,1,1,1,1,0],52,20,30,75],['Cut federal agencies and reduce deficits.',[0,3,3,0,0,2],22,25,55,60],['Prioritize defense, border security, and law enforcement spending.',[0,3,0,0,0,3],35,60,85,35]]},
+{t:'Housing',q:'Which housing policy do you support?',o:[['Public housing expansion, rent controls, and tenant protections.',[3,0,0,3,3,0],88,35,25,68],['More housing supply, zoning reform, and targeted affordability programs.',[3,1,2,2,1,0],55,20,25,82],['Reduce regulations so builders can create more market-rate housing.',[0,3,3,0,0,1],22,20,45,65],['Local control over zoning and fewer federal housing rules.',[0,2,2,0,0,3],20,30,65,55]]},
+{t:'Labor & Unions',q:'Which labor policy best matches your view?',o:[['Strong union rights, sectoral bargaining, and worker protections.',[3,0,0,3,3,0],82,25,20,72],['Protect unions and raise labor standards, but keep flexibility for business.',[3,0,1,1,1,0],62,20,25,78],['Workers and employers should negotiate mostly without federal interference.',[0,2,3,0,0,1],20,20,45,65],['Right-to-work laws and fewer labor regulations.',[0,3,2,0,0,2],18,25,55,55]]},
+{t:'Education K-12',q:'Which education policy is closest to your view?',o:[['Increase public-school funding and protect inclusive curriculum standards.',[3,0,0,3,3,0],70,35,20,72],['Support public schools while giving parents more transparency.',[2,1,1,1,1,0],50,25,35,72],['Expand school choice, vouchers, and parental control.',[0,3,2,0,0,2],25,35,65,55],['Reduce federal influence and let local communities control schools.',[0,2,3,0,0,3],20,25,70,55]]},
+{t:'Higher Education',q:'What should be done about college costs?',o:[['Tuition-free public college and broad student debt cancellation.',[3,0,0,3,3,0],88,25,20,75],['Targeted debt relief and more aid for lower-income students.',[3,0,1,2,2,0],65,20,20,78],['Lower costs through competition and accountability.',[1,2,3,0,0,1],28,20,40,65],['End federal loan expansion and reduce federal involvement.',[0,3,3,0,0,2],18,20,55,55]]},
+{t:'DEI & Race Policy',q:'Which view best matches yours?',o:[['Race-conscious policies and DEI are needed to correct systemic inequality.',[3,0,0,3,3,0],68,35,15,75],['Anti-discrimination efforts matter, but programs should be measured carefully.',[2,1,1,1,1,0],48,25,30,78],['Policy should be color-blind and avoid race-based preferences.',[0,2,3,0,0,2],25,25,55,65],['DEI programs are divisive and should be removed from public institutions.',[0,3,1,0,0,3],25,45,75,42]]},
+{t:'LGBTQ+ / Transgender Policy',q:'Which policy approach do you support?',o:[['Strong legal protections, including gender-identity protections.',[3,0,2,3,3,0],55,20,15,88],['Protect adult rights while setting age-based rules for minors.',[1,2,2,0,0,1],40,25,45,65],['Restrict some sports and school gender policies.',[0,3,1,0,0,2],30,45,70,45],['Roll back gender-identity policies in public institutions.',[0,3,0,0,0,3],30,60,80,32]]},
+{t:'Free Speech & Moderation',q:'Which approach is closest to yours?',o:[['Platforms should remove hate speech and dangerous misinformation more aggressively.',[3,0,0,2,2,0],55,55,20,55],['Platforms should moderate, but rules should be transparent and appealable.',[2,1,2,2,1,0],40,25,25,82],['Government should mostly stay out; users can choose platforms.',[0,1,3,0,0,1],18,15,40,72],['Government should punish viewpoint discrimination by major platforms.',[0,3,1,0,0,2],28,55,75,42]]},
+{t:'Election Laws',q:'Which election policy do you support?',o:[['Expand mail voting, early voting, automatic registration, and federal protections.',[3,0,1,3,3,0],55,20,15,88],['Accessible voting with voter ID and ballot security rules.',[1,2,2,0,0,1],35,25,45,70],['Stricter voter ID, tighter mail-ballot controls, and state-led election rules.',[0,3,1,0,0,2],30,40,65,50],['Security should be prioritized even if voting becomes less convenient.',[0,3,0,0,0,3],35,60,80,35]]},
+{t:'Criminal Justice',q:'Which criminal justice policy do you prefer?',o:[['Reduce incarceration, reform policing, and invest in community programs.',[3,0,1,3,3,0],65,20,15,82],['Reform police accountability while maintaining public safety.',[3,1,1,1,1,0],45,25,30,78],['Increase policing and prosecution for violent crime.',[0,3,1,0,0,2],30,45,70,50],['Use tougher sentencing and expanded law-enforcement power.',[0,3,0,0,0,3],35,70,85,30]]},
+{t:'Drugs',q:'Which drug policy is closest to your view?',o:[['Legalize or decriminalize many drugs and treat addiction as a health issue.',[2,0,3,3,3,0],55,15,10,88],['Legalize cannabis and expand treatment, but keep hard-drug limits.',[3,1,2,1,1,0],40,20,25,78],['Keep most drug laws but expand treatment courts.',[1,2,1,0,0,1],30,35,55,62],['Strict enforcement and tougher penalties for drug trafficking.',[0,3,0,0,0,3],35,65,80,35]]},
+{t:'Religious Liberty',q:'Which statement best matches your view?',o:[['Anti-discrimination protections should usually outweigh religious exemptions.',[3,0,0,2,2,0],50,35,20,65],['Balance civil rights protections with narrow religious exemptions.',[2,1,2,1,1,1],35,25,35,75],['Religious institutions and believers need broad legal exemptions.',[0,3,2,0,0,3],25,30,70,58],['Public policy should more strongly reflect traditional religious values.',[0,3,0,0,0,3],35,65,90,30]]},
+{t:'National Security & Surveillance',q:'Which security approach do you prefer?',o:[['Restrict surveillance and protect civil liberties, even if agencies lose tools.',[2,0,3,3,2,0],30,10,15,90],['Allow targeted surveillance with strong warrants and oversight.',[3,1,2,1,1,0],35,25,30,78],['Give intelligence and law enforcement more tools against threats.',[0,3,0,0,0,2],35,60,75,38],['Use broad surveillance and detention powers against threats.',[0,2,0,0,0,3],45,90,90,15]]},
+{t:'Foreign Policy',q:'Which foreign policy approach is closest to yours?',o:[['Human rights, diplomacy, climate cooperation, and limited military intervention.',[3,0,1,3,2,0],55,20,20,80],['Support allies and international institutions, with selective military force.',[3,1,1,1,0,0],45,35,40,70],['America First: allies should pay more and U.S. interests come first.',[0,3,2,0,0,2],25,40,85,48],['Strong nationalist foreign policy backed by military power.',[0,3,0,0,0,3],35,70,95,30]]},
+{t:'Trade & Tariffs',q:'Which trade policy do you prefer?',o:[['Use trade policy to protect labor, climate, and human rights standards.',[3,0,0,3,3,0],65,35,35,65],['Free trade with enforceable labor and environmental protections.',[3,1,2,1,0,0],40,20,35,78],['Lower tariffs and let global markets compete freely.',[0,1,3,0,0,1],15,15,35,72],['Use tariffs to protect American industry and punish unfair competitors.',[0,3,0,0,0,3],45,55,90,40]]},
+{t:'Technology & AI Regulation',q:'Which AI/tech policy do you support?',o:[['Strong regulation, labor protections, and public oversight of major AI systems.',[3,0,0,3,3,0],70,45,20,65],['Risk-based regulation with innovation support.',[3,1,2,1,1,0],45,25,30,75],['Light regulation to preserve innovation and competition.',[0,2,3,0,0,1],20,15,40,68],['Use tech regulation to protect national security and cultural stability.',[0,3,0,0,0,3],40,65,85,35]]},
+{t:'Executive Power',q:'Which view of presidential power is closest to yours?',o:[['Presidential power should be strongly checked by courts and Congress.',[3,0,3,3,2,1],30,10,20,90],['The president needs flexibility, but within clear legal limits.',[2,2,2,1,1,1],35,30,40,75],['The president needs stronger authority to overcome gridlock.',[0,3,0,0,0,2],45,70,75,35],['A strong leader should be able to bypass institutions in a crisis.',[0,2,0,0,0,3],55,95,95,10]]},
+{t:'National Identity',q:'Which view best matches yours?',o:[['American identity should be pluralistic and based on equal civic rights.',[3,0,2,3,3,0],45,15,15,92],['Patriotism matters, but it should include criticism and reform.',[3,1,2,2,2,0],40,20,30,82],['America should emphasize common national traditions and shared culture.',[0,3,1,0,0,2],30,40,75,55],['National unity requires strong cultural conformity and loyalty.',[0,3,0,0,0,3],40,80,95,22]]},
+{t:'Economic System',q:'Which economic system do you prefer?',o:[['Public or worker ownership of major industries and democratic planning.',[1,0,0,3,3,0],100,40,20,55],['Capitalism with strong unions, welfare, regulation, and public services.',[3,0,1,2,3,0],72,20,20,82],['Mostly free markets with basic safety nets and regulation.',[2,2,3,0,0,1],35,15,35,75],['Nationally directed capitalism focused on order, unity, and national strength.',[0,3,0,0,0,3],55,85,95,20]]},
+{t:'Civil Liberties',q:'Which civil-liberties position do you prefer?',o:[['Civil liberties should be protected even when speech or groups are unpopular.',[3,0,3,3,2,1],35,5,10,95],['Civil liberties matter, but public safety can justify limited restrictions.',[2,2,1,1,1,1],40,35,45,70],['Security and public order should sometimes outweigh individual liberties.',[0,3,0,0,0,2],40,70,80,35],['The state should restrict groups that threaten national unity or social order.',[0,2,0,0,0,3],50,95,95,10]]}
+];
+var current=0,selections=new Array(qs.length),byId=function(id){return document.getElementById(id)},partyNames=['Democratic Party','Republican Party','Libertarian Party','Green Party','Democratic Socialists','Constitution Party'],dimNames=['Economic State/Public Control','Centralized Authority','Nationalism / Traditional Hierarchy','Democratic Pluralism & Civil Liberties'];
+function render(){var q=qs[current],answers=byId('answers');byId('counter').innerHTML='Question '+(current+1)+' of '+qs.length;byId('progress').style.width=Math.round((current/qs.length)*100)+'%';byId('topic').innerHTML=q.t;byId('question').innerHTML=q.q;answers.innerHTML='';for(var i=0;i<q.o.length;i++){var b=document.createElement('button');b.type='button';b.className='answer'+(selections[current]===i?' selected':'');b.innerHTML=q.o[i][0];(function(ix){b.onclick=function(){selections[current]=ix;render();};})(i);answers.appendChild(b);}byId('backBtn').disabled=current===0;byId('nextBtn').innerHTML=current===qs.length-1?'Show Results':'Next';}
+function next(){if(selections[current]===undefined){alert('Pick an answer first.');return;}if(current<qs.length-1){current++;render();}else{showResults();}}
+function back(){if(current>0){current--;render();}}
+function pct(v,max){return Math.round((v/max)*100)}
+function bars(target,names,scores){var h='';for(var i=0;i<names.length;i++){h+='<div class="barRow"><div class="barTop"><span>'+names[i]+'</span><span>'+scores[i]+'%</span></div><div class="meter"><div class="fill" style="width:'+scores[i]+'%"></div></div></div>';}byId(target).innerHTML=h;}
+function ideology(d){var profiles=[['Communist',8,95,55,25,45,'Very high public or collective economic control, strong redistribution, and skepticism of private capital.'],['Socialist',36,78,30,20,78,'Strong public services, redistribution, labor power, and public regulation or ownership of major economic resources.'],['Democratic',66,45,20,25,90,'Competitive elections, civil liberties, pluralism, rule of law, and a mixed economy.'],['Fascist',94,50,92,95,10,'Centralized authority, ultranationalism, social hierarchy, and state-directed order over pluralism.']];var best=0,bd=999999;for(var i=0;i<profiles.length;i++){var p=profiles[i],dist=Math.pow(d[0]-p[2],2)+Math.pow(d[1]-p[3],2)+Math.pow(d[2]-p[4],2)+Math.pow(d[3]-p[5],2);if(dist<bd){bd=dist;best=i;}}return {name:profiles[best][0],pos:profiles[best][1],text:profiles[best][6]};}
+function showResults(){var p=[0,0,0,0,0,0],d=[0,0,0,0],ans='',i,j;for(i=0;i<qs.length;i++){var opt=qs[i].o[selections[i]];for(j=0;j<6;j++)p[j]+=opt[1][j];for(j=0;j<4;j++)d[j]+=opt[2+j];ans+='<div><b>'+qs[i].t+':</b> '+opt[0]+'</div>';}var ps=[],ds=[];for(i=0;i<6;i++)ps[i]=pct(p[i],qs.length*3);for(i=0;i<4;i++)ds[i]=Math.round(d[i]/qs.length);var best=0;for(i=1;i<ps.length;i++)if(ps[i]>ps[best])best=i;byId('mainSummary').innerHTML='Your closest party-platform match is <b>'+partyNames[best]+'</b> at <b>'+ps[best]+'%</b>.';bars('partyBars',partyNames,ps);bars('dimBars',dimNames,ds);var id=ideology(ds);byId('ideoDot').style.left=id.pos+'%';byId('ideoSummary').innerHTML='<b>Closest benchmark: '+id.name+'</b><br>'+id.text;byId('answerList').innerHTML=ans;byId('quiz').className='card hidden';byId('results').className='';window.scrollTo(0,0);}
+function retake(){current=0;selections=new Array(qs.length);byId('results').className='hidden';byId('quiz').className='card';render();window.scrollTo(0,0);}
+function share(){var txt=byId('mainSummary').textContent;if(navigator.share){navigator.share({title:'Am I a Commie?',text:txt});}else{alert(txt);}}
+byId('nextBtn').onclick=next;byId('backBtn').onclick=back;byId('retakeBtn').onclick=retake;byId('shareBtn').onclick=share;render();
+})();
+</script>
 </body>
 </html>
